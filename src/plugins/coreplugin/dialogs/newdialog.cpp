@@ -139,11 +139,8 @@ public:
     {
         QStyleOptionViewItem newoption = option;
         if (!(option.state & QStyle::State_Enabled)) {
-            QLinearGradient gradient(rect.topLeft(), rect.bottomLeft());
-            gradient.setColorAt(0, option.palette.window().color().lighter(106));
-            gradient.setColorAt(1, option.palette.window().color().darker(106));
-            painter->fillRect(rect, gradient);
-            painter->setPen(option.palette.window().color().darker(130));
+            painter->fillRect(rect, option.palette.window().color());
+            painter->setPen(option.palette.windowText().color());
             if (rect.top())
                 painter->drawLine(rect.topRight(), rect.topLeft());
             painter->drawLine(rect.bottomRight(), rect.bottomLeft());
@@ -412,6 +409,7 @@ void NewDialog::addItem(QStandardItem *topLevelCategoryItem, IWizardFactory *fac
         categoryItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         categoryItem->setText(QLatin1String("  ") + factory->displayCategory());
         categoryItem->setData(factory->category(), Qt::UserRole);
+        categoryItem->setData(palette().windowText().color(), Qt::ForegroundRole);
     }
 
     QStandardItem *wizardItem = new QStandardItem(factory->displayName());
